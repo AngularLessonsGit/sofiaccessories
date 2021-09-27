@@ -13,10 +13,10 @@ const jsonParser = bodyParser.json()
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //MongoDb
-const { connect, Users, Items } = require('./mongodb');
-connect()
-    .then(() => { console.log('MongoDb connected') })
-    .catch((err) => { console.log(err) });
+// const { connect, Users, Items } = require('./mongodb');
+// connect()
+//     .then(() => { console.log('MongoDb connected') })
+//     .catch((err) => { console.log(err) });
 
 //S3
 
@@ -24,73 +24,79 @@ const { upload, getList, getImage } = require('./s3');
 
 //API
 app.post('/user', jsonParser, function (req, res) {
-    Users.find(req.body, (err, users) => {
-        if (err || users.length == 0) {
-            res.status(200).send({ message: 'Користувача не знайдено' });
-        } else {
-            res.status(200).send({ user: users[0] });
-        }
-    })
+    res.status(200).send({ message: 'Користувача не знайдено' });
+    // Users.find(req.body, (err, users) => {
+    //     if (err || users.length == 0) {
+    //         res.status(200).send({ message: 'Користувача не знайдено' });
+    //     } else {
+    //         res.status(200).send({ user: users[0] });
+    //     }
+    // })
 });
 
 app.post('/register', jsonParser, function (req, res) {
-    Users.find({ login: req.body.login }, (err, users) => {
-        if (err || users.length == 0) {
-            Users.create(req.body);
-            res.status(200).send({ message: 'Користувача успішно створено', success: true });
-        } else {
-            res.status(200).send({ message: 'Користувач вже зареєстрований' });
-        }
-    })
+    res.status(200).send({ message: 'Користувача не знайдено' });
+    // Users.find({ login: req.body.login }, (err, users) => {
+    //     if (err || users.length == 0) {
+    //         Users.create(req.body);
+    //         res.status(200).send({ message: 'Користувача успішно створено', success: true });
+    //     } else {
+    //         res.status(200).send({ message: 'Користувач вже зареєстрований' });
+    //     }
+    // })
 });
 
 app.post('/remind', jsonParser, function (req, res) {
-    Users.find(req.body, (err, users) => {
-        if (err || users.length == 0) {
-            res.status(200).send({ message: 'Користувача не знайдено' });
-        } else {
-            res.status(200).send({ message: `Ваш пароль - ${users[0].password}`, success: true });
-        }
-    })
+    res.status(200).send({ message: 'Користувача не знайдено' });
+    // Users.find(req.body, (err, users) => {
+    //     if (err || users.length == 0) {
+    //         res.status(200).send({ message: 'Користувача не знайдено' });
+    //     } else {
+    //         res.status(200).send({ message: `Ваш пароль - ${users[0].password}`, success: true });
+    //     }
+    // })
 });
 
 app.post('/update-user', jsonParser, function (req, res) {
+    res.status(200).send({ message: 'Користувача не знайдено' });
     const filter = { _id: req.body._id };
 
-    Users.findOneAndUpdate(filter, req.body, { new: true }, (err, user) => {
-        if (err) {
-            res.status(200).send({ message: 'Користувача не знайдено' });
-        } else {
-            res.status(200).send({ message: 'Профіль успішно оновлено', success: true, user });
-        }
-    })
+    // Users.findOneAndUpdate(filter, req.body, { new: true }, (err, user) => {
+    //     if (err) {
+    //         res.status(200).send({ message: 'Користувача не знайдено' });
+    //     } else {
+    //         res.status(200).send({ message: 'Профіль успішно оновлено', success: true, user });
+    //     }
+    // })
 });
 
 app.post('/add-item', jsonParser, function (req, res) {
-    Users.find({ login: req.body.user.login, password: req.body.user.password }, (err, users) => {
-        if (err || users.length == 0) {
-            res.status(200).send({ message: 'Користувача не знайдено' });
-        } else {
-            if (!users[0].isAdmin) {
-                res.status(200).send({ message: 'Користувач не може добавляти пост' });
-            } else {
-                delete req.body.user;
-                Items.create(req.body);
-                res.status(200).send({ message: 'Товар успішно додано', success: true });
-            }
+    res.status(200).send({ message: 'Користувача не знайдено' });
+    // Users.find({ login: req.body.user.login, password: req.body.user.password }, (err, users) => {
+    //     if (err || users.length == 0) {
+    //         res.status(200).send({ message: 'Користувача не знайдено' });
+    //     } else {
+    //         if (!users[0].isAdmin) {
+    //             res.status(200).send({ message: 'Користувач не може добавляти пост' });
+    //         } else {
+    //             delete req.body.user;
+    //             Items.create(req.body);
+    //             res.status(200).send({ message: 'Товар успішно додано', success: true });
+    //         }
 
-        }
-    })
+    //     }
+    // })
 });
 
 app.post('/get-list', function (req, res) {
-    Items.find({}, (err, items) => {
-        if (err || items.length == 0) {
-            res.status(200).send({ message: 'Товари не знайдено' });
-        } else {
-            res.status(200).send({ items, success: true });
-        }
-    });
+    res.status(200).send({ message: 'Товари не знайдено' });
+    // Items.find({}, (err, items) => {
+    //     if (err || items.length == 0) {
+    //         res.status(200).send({ message: 'Товари не знайдено' });
+    //     } else {
+    //         res.status(200).send({ items, success: true });
+    //     }
+    // });
 });
 
 // app.post('/get-image',jsonParser, function(req, res) {
@@ -100,7 +106,7 @@ app.post('/get-list', function (req, res) {
 // });
 
 app.post('/upload', upload.array('image', 1), (req, res) => {
-    Items.create({ ...req.body, image: req.file });
+    // Items.create({ ...req.body, image: req.file });
     res.status(200).send({ message: 'Товар успішно додано', success: true });
 });
 
